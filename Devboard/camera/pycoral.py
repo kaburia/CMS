@@ -33,13 +33,21 @@ TFLITE_FILE_PATH = 'action3.tflite'
 
 # Load the TFLite model in TFLite Interpreter
 interpreter = tflite.Interpreter(TFLITE_FILE_PATH)
+interpreter.allocate_tensors()
+# Get input and output tensors.
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+print(output_details)
+print()
+print(input_details)
+
 # There is only 1 signature defined in the model,
 # so it will return it by default.
 # If there are multiple signatures then we can pass the name.
-my_signature = interpreter.get_signature_runner()
+# my_signature = interpreter.get_signature_runner()
 
-# my_signature is callable with input as arguments.
-output = my_signature(x=tflite.constant([1.0], shape=(1,10), dtype=tflite.float32))
-# 'output' is dictionary with all outputs from the inference.
-# In this case we have single output 'result'.
-print(output['result']) 
+# # my_signature is callable with input as arguments.
+# output = my_signature(x=tflite.constant([1.0], shape=(1,10), dtype=tflite.float32))
+# # 'output' is dictionary with all outputs from the inference.
+# # In this case we have single output 'result'.
+# print(output['result']) 
