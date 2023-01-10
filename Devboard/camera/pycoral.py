@@ -4,6 +4,9 @@ import numpy as np
 import mediapipe as mp
 from mediapipe_functs import mediapipe_detection, draw_styled_landmarks, extract_keypoints
 import os
+from tensorflow import keras
+
+model = keras.models.load_model('action5.h5', compile=False)
 
 # Loading saved test points
 # X_test = np.load('x_test.npy')
@@ -36,13 +39,14 @@ Output Type: <class 'numpy.float32'>
 
 # test_imgs_numpy = np.array(X_test, dtype=np.float32)
 # interpreter.set_tensor(input_details[0]['index'], test_imgs_numpy)
-interpreter.invoke()
-tflite_model_predictions = interpreter.get_tensor(output_details[0]['index'])
-print(tflite_model_predictions)
+# interpreter.invoke()
+# tflite_model_predictions = interpreter.get_tensor(output_details[0]['index'])
+# print(tflite_model_predictions)
 
 mp_holistic = mp.solutions.holistic # holistic model
 mp_drawing = mp.solutions.drawing_utils # drawing utilities
 actions = np.array(['come', 'left', 'right'])
+action2 = np.array(['standby', 'come', 'left', 'right'])
 
 
 colors = [(245,117,16), (117,245,16), (16,117,245)]
@@ -57,11 +61,11 @@ def prob_viz(res, actions, input_frame, colors):
 # 1. New detection variables
 sequence = []
 sentence = []
-threshold = 0.8
+predictions = []
+threshold = 0.5
 
 cap = cv2.VideoCapture(0)
 # Set mediapipe model 
-
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     while cap.isOpened():
 
@@ -77,28 +81,34 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         
         # 2. Prediction logic
         keypoints = extract_keypoints(results)
-#         sequence.insert(0,keypoints)
-#         sequence = sequence[:30]
         sequence.append(keypoints)
         sequence = sequence[-30:]
-
+        
         if len(sequence) == 30:
             test = np.expand_dims(np.array(sequence, dtype=np.float32), axis=0)
             interpreter.set_tensor(input_details[0]['index'], test)
             interpreter.invoke()
           
-            res = interpreter.get_tensor(output_details[0]['index'])
+            res = interpreter.get_tensor(output_details[0]['index'])[0]
+            # res = model.predict(np.expand_dims(sequence, axis=0))[0]
             print(res)
+            # print(tflite_model_predictions)
+            # print(tflite_model_predictions==res)
             print(np.argmax(res))
-            print(actions[np.argmax(res)])
-
+            # print(np.argmax(tflite_model_predictions))
+            # print(actions[np.argmax(res)])
+            predictions.append(np.argmax(res))
+            
+            
         #3. Viz logic
-            if res[np.argmax(res)] > threshold: 
-                if len(sentence) > 0: 
-                    if actions[np.argmax(res)] != sentence[-1]:
+            if np.unique(predictions[-10:])[0]==np.argmax(res): 
+                if res[np.argmax(res)] > threshold: 
+                    
+                    if len(sentence) > 0: 
+                        if actions[np.argmax(res)] != sentence[-1]:
+                            sentence.append(actions[np.argmax(res)])
+                    else:
                         sentence.append(actions[np.argmax(res)])
-                else:
-                    sentence.append(actions[np.argmax(res)])
 
             if len(sentence) > 5: 
                 sentence = sentence[-5:]
@@ -118,4 +128,3 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             break
     cap.release()
     cv2.destroyAllWindows()
-
