@@ -20,7 +20,7 @@ TFLITE_FILE_PATH = 'action5.tflite'
 interpreter = tflite.lite.Interpreter(model_path=TFLITE_FILE_PATH)
 
 # Get input and output tensors.
-interpreter.allocate_tensors()
+# interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
