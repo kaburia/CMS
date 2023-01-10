@@ -1,12 +1,13 @@
-import tensorflow as tf
+# import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 import cv2
 import numpy as np
 import mediapipe as mp
 from mediapipe_functs import mediapipe_detection, draw_styled_landmarks, extract_keypoints
 import os
-from tensorflow import keras
+# from tensorflow import keras
 
-model = keras.models.load_model('action5.h5', compile=False)
+# model = keras.models.load_model('action5.h5', compile=False)
 
 # Loading saved test points
 # X_test = np.load('x_test.npy')
@@ -16,7 +17,7 @@ model = keras.models.load_model('action5.h5', compile=False)
 TFLITE_FILE_PATH = 'action5.tflite'
 
 # Loading the tensorflow model
-interpreter = tf.lite.Interpreter(model_path=TFLITE_FILE_PATH)
+interpreter = tflite.lite.Interpreter(model_path=TFLITE_FILE_PATH)
 
 # Get input and output tensors.
 interpreter.allocate_tensors()
@@ -92,11 +93,8 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             res = interpreter.get_tensor(output_details[0]['index'])[0]
             # res = model.predict(np.expand_dims(sequence, axis=0))[0]
             print(res)
-            # print(tflite_model_predictions)
-            # print(tflite_model_predictions==res)
-            print(np.argmax(res))
             # print(np.argmax(tflite_model_predictions))
-            # print(actions[np.argmax(res)])
+            print(actions[np.argmax(res)])
             predictions.append(np.argmax(res))
             
             
