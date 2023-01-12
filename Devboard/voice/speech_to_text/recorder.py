@@ -1,63 +1,44 @@
-import pyaudio
 import wave
-import speech_recognition as sr
-# import librosa
+import pyaudio
+import whisper
 
+# Loading the whisper model
+model = whisper.load_model("base")
 
-audio = pyaudio.PyAudio()
-stream = audio.open(format=pyaudio.paInt16,
+def RecordInit(sampling_rate=44100):
+    audio = pyaudio.PyAudio()
+    stream = audio.open(format=pyaudio.paInt16,
                     channels=1,
                     rate=44100,
                     input=True,
                     frames_per_buffer=1024)
-recognizer = sr.Recognizer()
+    return audio, stream
 
-# Listening in
-# mic =sr.Microphone()
+# Record Audio
+def record_audio(audiofile):
+    print('Start Recording: ')
+    frames = []
+    audio, stream = RecordInit()
+    try:
 
-#Audio
-frames = []
+        while True:
+            data = stream.read(1024)
+            frames.append(data)
+            sound_file = wave.open(audiofile, 'wb')
+            sound_file.setnchannels(1)
+            sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
+            sound_file.setframerate(44100)
+            sound_file.writeframes(b''.join(frames))
 
-print('Start Recording: ')
-count = 0 
+    except KeyboardInterrupt:
+        print('System Interrupted!!')
 
-try:
-    while True:
-        data = stream.read(1024)
-        frames.append(data)
-        # with open('audio_files.wav', 'wb') as f:
-        #     file = f.write(b'{frames}')
+# Transcribe
+def transcribe(audiofile):
+    print('Transcribing....')
+    result = model.transcribe(audiofile)
+    return result['text']
 
-        # sound_file = wave.open('audio_files.wav', 'wb')
-        # sound_file.setnchannels(1)
-        # sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
-        # sound_file.setframerate(44100)
-        # sound_file.writeframes(b''.join(frames))
-        output = wave.open('audio_files.wav','w')
-        output.setparams((2,2,44100,0,'NONE','not compressed'))
-        output.writeframes(data)
-        output.close()
-
-        # print(data)
-        # break
-        # res = sr.AudioData(data, sample_rate=44100, sample_width=1)
-        res = sr.AudioFile('audio_files.wav')
-        # print(res)
-        print(count)
-        count += 1
-        with res as source:
-            audio = recognizer.record(source)
-        # Transcribe using Google API
-        # print(mic)
-        # with mic as source:
-            
-            # recognizer.adjust_for_ambient_noise(source)
-            # audio = recognizer.listen(source)S
-            # print(audio, 'audio')
-        print("Translating your speech...")
-        print(recognizer.recognize_google(audio_data=audio, language='en-US', show_all=True))
-except KeyboardInterrupt:
-    stream.stop_stream()
-    stream.close()
-    audio.terminate()
-    pass
+if __name__ == '__main__':
+    record_audio('audio_files.wav')
+    print(transcribe('audio_files.wav'))
