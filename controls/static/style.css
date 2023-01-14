@@ -113,3 +113,9 @@ label #cancel{
     visibility: visible;
   }
 }
+/* section{
+  background: url(background.jpg) no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+} */

@@ -8,7 +8,7 @@ qr = QRCode(version=1,
             border=2)
 
 # Data to display
-qr.add_data("SCAN TO ACCESS CONTROL")
+qr.add_data("http://movement.pythonanywhere.com/")
 qr.make(fit=True)
 
 img = qr.make_image(fill_color='black', back_color='white')

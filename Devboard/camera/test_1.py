@@ -7,7 +7,7 @@ from tensorflow import keras
 mp_holistic = mp.solutions.holistic # holistic model
 mp_drawing = mp.solutions.drawing_utils # drawing utilities
 actions = np.array(['come', 'left', 'right'])
-model = keras.models.load_model('action2.h5')
+model = keras.models.load_model('action5.h5', compile=False)
 
 
 colors = [(245,117,16), (117,245,16), (16,117,245)]

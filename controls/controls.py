@@ -25,15 +25,15 @@ def index():
 # Camera Input page
 @app.route('/camera', methods = ['POST', 'GET'])
 def cam_input():
-    global result
-    if request.method == 'POST':
-        result = request.form.to_dict()
-        return render_template('camera.html')
-
-@app.route('/camera')
-def video_feed():
-    global result
+    # global result
+    # if request.method == 'POST':
+    #     result = request.form.to_dict()
     return Response(camera_input())
+
+# @app.route('/camera')
+# def video_feed():
+#     global result
+#     return Response(camera_input())
 
 
 
