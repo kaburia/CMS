@@ -2,12 +2,12 @@ from flask import Flask, redirect, url_for, render_template, request, Response
 import sys
 
 camera_path = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\camera'
-# voice = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\voice\speech_to_text'
+# # voice = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\voice\speech_to_text'
 
 sys.path.insert(0, f'{camera_path}')
-# from pycoral import camera_inference # Testing the images seen
+from pycoral import camera_inference # Testing the images seen
 from camera_input import camera_input #Turning on the camera
-# # Image input
+# # # Image input
 # # from object_detection import detector
 
 # sys.path.insert(0, f'{voice}')
@@ -18,22 +18,28 @@ from camera_input import camera_input #Turning on the camera
 
 app = Flask(__name__)
 
+
+
 @app.route('/')
 def index():
     return render_template("index.html")
 
-# Camera Input page
-@app.route('/camera', methods = ['POST', 'GET'])
-def cam_input():
-    # global result
-    # if request.method == 'POST':
-    #     result = request.form.to_dict()
-    return Response(camera_input())
 
-# @app.route('/camera')
-# def video_feed():
-#     global result
-#     return Response(camera_input())
+@app.route('/camera')
+def video():
+    return Response(camera_inference(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/voice')
+def voice():
+    return render_template("index.html")
+
+@app.route('/image')
+def image():
+    return render_template("index.html")
+
+@app.route('/text')
+def text():
+    return render_template("index.html")
 
 
 
@@ -51,7 +57,7 @@ def cam_input():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.111', debug=False, port=9999)
+    app.run(debug=True, port=5500)
 
 #intents file
 '''
