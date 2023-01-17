@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>CMS</title>
+    <link rel="stylesheet" href="../static/camera.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  </head>
+  <body>
+    <div class="Model">
+        <h1>Live streaming</h1>
+        <img src="{{ url_for('video') }}" width="150%"/>
+    </div>
+      <div class="sidebar">
+        <header>My Menu</header>
+        <a href="#">
+          <i class="fas fa-qrcode"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="camera" class="active">
+          <i class="fas fa-camera"></i>
+          <span>Camera Input</span>
+        </a>
+        <a href="voice">
+          <i class="fas fa-microphone"></i>
+          <span>Voice Input</span>
+        </a>
+        <a href="text">
+           <i class="fas fa-sms"></i>
+          <span>Text Input</span>
+        </a>
+        <a href="image">
+          <i class="far fa-image"></i>
+          <span>Image Input</span>
+        </a>
+        <a href="about">
+          <i class="fas fa-question-circle"></i>
+          <span>About</span>
+        </a>
+      </div>
+            
+    </body>
+
+
+</html>
