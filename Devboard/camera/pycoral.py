@@ -7,7 +7,7 @@ from mediapipe_functs import mediapipe_detection, draw_styled_landmarks, extract
 import os
 
 # SAVED_MODEL_PATH 
-TFLITE_FILE_PATH = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\camera\action5.tflite'
+TFLITE_FILE_PATH = 'action5.tflite'
 
 # Loading the tensorflow model
 interpreter = tflite.Interpreter(model_path=TFLITE_FILE_PATH)
