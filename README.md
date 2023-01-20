@@ -6,13 +6,19 @@ Control movement of the car based on either hand signals, voice input, text inpu
 
 ## Installation Steps
 
-### 1. Create a Virtual Environment
+### 1. Clone the repository and change directory into it
+```
+git clone https://github.com/kaburia/CMS.git
+cd CMS
+```
 
-```zsh
+### 2. Create a Virtual Environment
+
+```
 python -m venv CMS
 ```
 
- ### 2. Activate the Virtual Environment
+ ### 3. Activate the Virtual Environment
 
  `Linux` 
 
@@ -24,13 +30,13 @@ source ./CMS/bin/activate
  .\CMS\Scripts\activate
  ```
 
-### 3. Install all Required Packages
+### 4. Install all Required Packages
 
 ```zsh
-python3 -m pip install requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
-### 4. Change directory to controls then run controls.py
+### 5. Change directory to controls then run controls.py
 ```
 cd controls
 python3 controls.py
