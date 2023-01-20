@@ -1,5 +1,5 @@
-# import tensorflow as tflite
-import tflite_runtime.interpreter as tflite
+import tensorflow as tflite
+# import tflite_runtime.interpreter as tflite
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -7,10 +7,10 @@ from mediapipe_functs import mediapipe_detection, draw_styled_landmarks, extract
 import os
 
 # SAVED_MODEL_PATH 
-TFLITE_FILE_PATH = 'action5.tflite'
+TFLITE_FILE_PATH = '../Devboard/camera/action5.tflite'
 
 # Loading the tensorflow model
-interpreter = tflite.Interpreter(model_path=TFLITE_FILE_PATH)
+interpreter = tflite.lite.Interpreter(model_path=TFLITE_FILE_PATH)
 
 # Get input and output tensors.
 interpreter.allocate_tensors()
