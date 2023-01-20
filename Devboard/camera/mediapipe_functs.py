@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import mediapipe as mp
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+# from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 mp_holistic = mp.solutions.holistic # holistic model
 mp_drawing = mp.solutions.drawing_utils # drawing utilities

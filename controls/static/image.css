@@ -1,3 +1,19 @@
+.container {
+  width:100%;
+  height:100vh;
+  display:flex;
+  align-items: start;
+  justify-content: start;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 50px;
+  font-family: 'Montserrat', sans-serif;
+  border:2px solid red;
+ 
+}
+
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans:600&display=swap');
 *{
   margin: 0;
@@ -5,12 +21,16 @@
   text-decoration: none;
 }
 .sidebar{
-  position: fixed;
-  width: 240px;
-  left: 0;
+  /* position: fixed; */
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  gap:10px;
+  width: 300px;
   height: 100%;
   background: #1e1e1e;
-  transition: all .5s ease;
+  /* transition: all .5s ease; */
 }
 .sidebar header{
   font-size: 28px;
@@ -22,9 +42,12 @@
   font-family: 'Montserrat', sans-serif;
 }
 .sidebar a{
-  display: block;
+  margin:2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 65px;
-  width: 100%;
+  width: 90%;
   color: white;
   line-height: 65px;
   padding-left: 30px;
@@ -33,12 +56,19 @@
   border-top: 1px solid rgba(255,255,255,.1);
   border-left: 5px solid transparent;
   font-family: 'Open Sans', sans-serif;
-  transition: all .5s ease;
+  border:2px solid white;
+
+  /* transition: all .5s ease; */
+}
+.sidebar a span{
+  font-size: 16px;
 }
 a.active,a:hover{
   border-left: 5px solid #b93632;
   color: #b932ae;
 }
+
+
 .sidebar a i{
   font-size: 23px;
   margin-right: 16px;
@@ -47,53 +77,34 @@ a.active,a:hover{
   letter-spacing: 1px;
   text-transform: uppercase;
 }
-#check{
-  display: none;
+
+.form-wrapper{
+  border:1px solid black
 }
-label #btn,label #cancel{
-  position: absolute;
-  cursor: pointer;
-  color: white;
-  border-radius: 5px;
-  border: 1px solid #262626;
-  margin: 15px 30px;
-  font-size: 29px;
-  background: #262626;
-  height: 45px;
-  width: 45px;
-  text-align: center;
-  line-height: 45px;
-  transition: all .5s ease;
+
+.form-wrapper .heading{
+  font-size: 28px;
 }
-label #cancel{
-  opacity: 0;
-  visibility: hidden;
-}
-#check:checked ~ .sidebar{
-  left: 0;
-}
-#check:checked ~ label #btn{
-  margin-left: 245px;
-  opacity: 0;
-  visibility: hidden;
-}
-#check:checked ~ label #cancel{
-  margin-left: 245px;
-  opacity: 1;
-  visibility: visible;
+
+.form-wrapper{
+display: flex;
+flex-direction: column;
+gap:2rem;
+width:80%;
+height:100%
 }
 
 body {
-  background-image: url("back2.jpg");
+  /* background-image: url("back2.jpg"); */
   background-repeat: no-repeat;
-  background-size: cover;
+  /* background-size: cover; */
   display: flex;
   flex-direction: column;
-  max-width: 1440px;
-  margin: 0 auto;
+  /* max-width: 1440px; */
+  margin: 0 ;
   height: 100vh;
   /* height: -webkit-fill-available; */
-  background-position: center; 
+  /* background-position: center;  */
 }
 @media only screen and (max-width: 414px ){
   

@@ -7,11 +7,11 @@ from wtforms import SubmitField
 import sys, os
 # from werkzeug.utils import secure_filename
 
-camera_path = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\camera'
+camera_path = '../Devboard/camera'
 # # voice = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\voice\speech_to_text'
 
 sys.path.insert(0, f'{camera_path}')
-from pycoral_t import camera_inference # Testing the images seen
+from pycoral import camera_inference # Testing the images seen
 from camera_input import camera_input #Turning on the camera
 # # # Image input
 # # from object_detection import detector
@@ -24,7 +24,7 @@ from camera_input import camera_input #Turning on the camera
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\controls\static\images'
+UPLOAD_FOLDER = '../controls/static/images'
 
 app.secret_key = "secret key"
 app.config['UPLOADED_PHOTOS_DEST'] = UPLOAD_FOLDER
@@ -70,10 +70,21 @@ def image():
 def cam():
     return render_template('camera.html')
 
-
+# Signals inference
 @app.route('/cam')
 def video():
     cam()
+    return Response(camera_inference(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+'''
+TEST THIS
+IF REDIRECTED FROM A URL USE DISPLAY ONLY THE CAMERA
+IF 
+'''
+
+# What the camera sees
+@app.route('/camInput')
+def camInput():
     return Response(camera_inference(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/voice')
@@ -106,7 +117,7 @@ def about():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.100', debug=True, port=5500)
+    app.run(debug=True, port=5500)
 
 #intents file
 '''

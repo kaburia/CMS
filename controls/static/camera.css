@@ -1,3 +1,11 @@
+.Model {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 50px;
+    font-family: 'Montserrat', sans-serif;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans:600&display=swap');
 *{
   margin: 0;
@@ -10,7 +18,7 @@
   left: 0;
   height: 100%;
   background: #1e1e1e;
-  transition: all .5s ease;
+  /* transition: all .5s ease; */
 }
 .sidebar header{
   font-size: 28px;
@@ -33,7 +41,7 @@
   border-top: 1px solid rgba(255,255,255,.1);
   border-left: 5px solid transparent;
   font-family: 'Open Sans', sans-serif;
-  transition: all .5s ease;
+  /* transition: all .5s ease; */
 }
 a.active,a:hover{
   border-left: 5px solid #b93632;
@@ -47,44 +55,9 @@ a.active,a:hover{
   letter-spacing: 1px;
   text-transform: uppercase;
 }
-#check{
-  display: none;
-}
-label #btn,label #cancel{
-  position: absolute;
-  cursor: pointer;
-  color: white;
-  border-radius: 5px;
-  border: 1px solid #262626;
-  margin: 15px 30px;
-  font-size: 29px;
-  background: #262626;
-  height: 45px;
-  width: 45px;
-  text-align: center;
-  line-height: 45px;
-  transition: all .5s ease;
-}
-label #cancel{
-  opacity: 0;
-  visibility: hidden;
-}
-#check:checked ~ .sidebar{
-  left: 0;
-}
-#check:checked ~ label #btn{
-  margin-left: 245px;
-  opacity: 0;
-  visibility: hidden;
-}
-#check:checked ~ label #cancel{
-  margin-left: 245px;
-  opacity: 1;
-  visibility: visible;
-}
 
 body {
-  background-image: url("back2.jpg");
+  /* background-image: url("back2.jpg"); */
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
