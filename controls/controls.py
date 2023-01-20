@@ -117,7 +117,7 @@ def about():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.100', debug=True, port=5500)
+    app.run(debug=True, port=5500)
 
 #intents file
 '''
