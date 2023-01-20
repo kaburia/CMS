@@ -11,7 +11,7 @@ camera_path = 'Devboard/camera'
 # # voice = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\voice\speech_to_text'
 
 sys.path.insert(0, f'{camera_path}')
-from pycoral_t import camera_inference # Testing the images seen
+from pycoral import camera_inference # Testing the images seen
 from camera_input import camera_input #Turning on the camera
 # # # Image input
 # # from object_detection import detector
