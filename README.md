@@ -33,12 +33,12 @@ source ./CMS/bin/activate
 ### 4. Install all Required Packages
 
 ```zsh
-python3 -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### 5. Change directory to controls then run controls.py
 ```
 cd controls
-python3 controls.py
+python controls.py
 ```
 
