@@ -87,10 +87,15 @@ IF
 def camInput():
     return Response(camera_inference(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/voice')
 def voice():
     return render_template("voice.html")
 
+
+'''
+Using stable Diffusion to convert text to images
+'''
 @app.route('/text')
 def text():
     return render_template("text.html")
