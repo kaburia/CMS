@@ -87,10 +87,15 @@ IF
 def camInput():
     return Response(camera_inference(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/voice')
 def voice():
     return render_template("voice.html")
 
+
+'''
+Using stable Diffusion to convert text to images
+'''
 @app.route('/text')
 def text():
     return render_template("text.html")
@@ -117,7 +122,7 @@ def about():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.100', debug=True, port=5500)
+    app.run(debug=True, port=5500)
 
 #intents file
 '''
