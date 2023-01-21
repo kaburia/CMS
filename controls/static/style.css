@@ -82,43 +82,7 @@ label #cancel{
   opacity: 1;
   visibility: visible;
 }
-/* @media(max-width : 860px){
-  .sidebar{
-    height: auto;
-    width: 70px;
-    left: 0;
-    margin: 100px 0;
-  }
-  header,#btn,#cancel{
-    display: none;
-  }
-  span{
-    position: absolute;
-    margin-left: 23px;
-    opacity: 0;
-    visibility: hidden;
-  }
-  .sidebar a{
-    height: 60px;
-  }
-  .sidebar a i{
-    margin-left: -10px;
-  } */
-  /* a:hover {
-    width: 200px;
-    background: inherit;
-  }
-  .sidebar a:hover span{
-    opacity: 1;
-    visibility: visible;
-  } */
-/* } */
-/* section{
-  background: url(background.jpg) no-repeat;
-  background-position: center;
-  background-size: cover;
-  height: 100vh;
-} */
+
 body {
   background-image: url("back2.jpg");
   background-repeat: no-repeat;

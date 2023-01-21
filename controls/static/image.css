@@ -93,78 +93,7 @@ gap:2rem;
 width:80%;
 height:100%
 }
-/* #check{
-  display: none;
-} */
-/* label #btn,label #cancel{
-  position: absolute;
-  cursor: pointer;
-  color: white;
-  border-radius: 5px;
-  border: 1px solid #262626;
-  margin: 15px 30px;
-  font-size: 29px;
-  background: #262626;
-  height: 45px;
-  width: 45px;
-  text-align: center;
-  line-height: 45px;
-  transition: all .5s ease;
-}
-label #cancel{
-  opacity: 0;
-  visibility: hidden;
-}
-#check:checked ~ .sidebar{
-  left: 0;
-}
-#check:checked ~ label #btn{
-  margin-left: 245px;
-  opacity: 0;
-  visibility: hidden;
-}
-#check:checked ~ label #cancel{
-  margin-left: 245px;
-  opacity: 1;
-  visibility: visible;
-} */
-/* @media(max-width : 860px){
-  .sidebar{
-    height: auto;
-    width: 70px;
-    left: 0;
-    margin: 100px 0;
-  }
-  header,#btn,#cancel{
-    display: none;
-  }
-  span{
-    position: absolute;
-    margin-left: 23px;
-    opacity: 0;
-    visibility: hidden;
-  }
-  .sidebar a{
-    height: 60px;
-  }
-  .sidebar a i{
-    margin-left: -10px;
-  } */
-  /* a:hover {
-    width: 200px;
-    background: inherit;
-  }
-  .sidebar a:hover span{
-    opacity: 1;
-    visibility: visible;
-  } */
-/* } */
-/* section{
-  background: url(background.jpg) no-repeat;
-  background-position: center;
-  background-size: cover;
-  height: 100vh;
-} */
+
 body {
   /* background-image: url("back2.jpg"); */
   background-repeat: no-repeat;
