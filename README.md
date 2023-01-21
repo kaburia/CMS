@@ -15,7 +15,7 @@ cd CMS
 ### 2. Create a Virtual Environment
 
 ```
-python -m venv CMS
+python3 -m venv CMS
 ```
 
  ### 3. Activate the Virtual Environment
