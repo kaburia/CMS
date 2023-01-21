@@ -8,7 +8,7 @@ Model trained on a stream of images<br>
 2. To detect indoor objects: <br>
 
 ```
- [door, cabinetDoor, refrigeratorDoor, window, chair, table, cabinet, couch, openDoor, pole]
+ ['door', 'cabinetDoor', 'refrigeratorDoor', 'window', 'chair', 'table', 'cabinet', 'couch', 'openDoor', 'pole']
 ```
 
 
