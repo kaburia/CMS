@@ -43,3 +43,6 @@ python controls.py
 ```
 Open [http://localhost:5500](http://localhost:5500) with your browser to see the result.
 
+### Setting up Coral Dev Board 
+https://docs.google.com/document/d/1kgKmQmAn292BDhxTejwZH-vQI1-5RpvkD-5UMVHZiNY/edit
+
