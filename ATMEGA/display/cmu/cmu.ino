@@ -1,7 +1,11 @@
 #include <Servo.h>
 #include <Wire.h>
+#include<SPI.h>  
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+
+
+//.......................................SPI with Coral Dev Board Master................................................
 
 
 
@@ -48,12 +52,14 @@ long duration;
 int distance;
 
 
+
 //............................Servo...........................................................
 
 Servo myservo; 
+int Degree;
 
 
-//...............................................................................................................................................................................................
+//..............................................................................................................................................................................................
 void setup() {
    // For the serial monitor 
   Serial.begin(9600);//baud rate
@@ -83,6 +89,11 @@ void setup() {
   previousMillis = millis();
 
 
+//.....................SPI COMMUNICATION WITH DEV BOARD.......................
+pinMode(MISO,OUTPUT); 
+SPCR |= _BV(SPE);
+SPI.attachInterrupt(); 
+
  
 //...........................OLED.............................................
         // initialize OLED display with address 0x3C for 128x64
@@ -97,7 +108,8 @@ void setup() {
   oled.setCursor(0, 10);        // position to display // text to display
   oled.display();
 //...........................SERVO.............................................
-   myservo.attach(9); //Attach servo pwm controll to pin 9
+  
+   myservo.attach(9,600,2300);  // (pin 9, min 0, max 180 deg =2300 uSec, if 90deg =1450 uSec)
   
   }
 
@@ -105,8 +117,14 @@ void setup() {
 //................................................................................................................
 //................................................................................................................
 void loop() {
-   
-oled.println("Speed");
+ 
+  
+  byte Slavesend=Degree;                             
+  SPDR = Slavesend;
+            
+  
+  
+/*oled.println("Speed");
 oled.println(rpm_oriji);
 int CentiMetres = Get_Distance();
 oled.println(CentiMetres);
@@ -117,9 +135,20 @@ oled.clearDisplay();
 oled.setTextSize(1);          // text size
 oled.setTextColor(WHITE);     // text color
 oled.setCursor(5, 10);        // position to display // text to display
-oled.display();
+oled.display();*/
 
-Left(255);
+Rotate_servo(0);
+Left(250);
+delay(1000);
+Right(250);
+delay(1000);
+forward(250);
+delay(1000);
+Rotate_servo(90);
+
+
+
+
  
 }
 //..............................................................................................................................................................................
@@ -127,6 +156,40 @@ Left(255);
 void updateEncoder(){
   //incrementing encoder value
   encoderValue++;
+}
+ISR (SPI_STC_vect)
+{
+  byte Slavereceived = SPDR;                  
+  bool received = true; 
+  /*if (Slavereceived ==DegreeRead ){
+    SPDR = Degree;
+    }
+    if (Slavereceived ==DistanceRead ){
+    SPDR = Distance;
+    }  
+    if (Slavereceived ==forward ){
+    
+    } 
+    if (Slavereceived == Back ){
+    
+    }
+    if (Slavereceived == Left ){
+    
+    }
+    if (Slavereceived == Right ){
+    
+    }
+    if (Slavereceived == Stop ){
+    
+    }
+    if (Slavereceived ==Degree  ){
+    
+    }*/
+    
+    
+   
+     
+                        
 }
 
 void  forward(int speed){
@@ -226,5 +289,5 @@ int Get_Distance(){
  
 void Rotate_servo(int Angle){
    myservo.write(Angle);                  // sets the servo position according to the scaled value
-  delay(15);   
+  delay(500);   
   }
