@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired, FileField
 from wtforms import SubmitField
 
+
 import sys, os
 # from werkzeug.utils import secure_filename
 
@@ -11,8 +12,9 @@ camera_path = '../Devboard/camera'
 # # voice = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\voice\speech_to_text'
 
 sys.path.insert(0, f'{camera_path}')
-from pycoral import camera_inference # Testing the images seen
-from camera_input import camera_input #Turning on the camera
+# from pycoral_t import camera_inference # Testing the images seen
+# from camera_input import camera_input #Turning on the camera
+from detector import model_detection
 # # # Image input
 # # from object_detection import detector
 
@@ -56,14 +58,17 @@ def index():
 
 # Image input page
 @app.route('/image', methods=['GET', 'POST'])
-def image():
+def image():    
     form = UploadForm()
     # True without errors
     if form.validate_on_submit():
         filename = photos.save(form.photo.data)
         file_url = url_for('get_file', filename=filename)
+        
     else:
         file_url = None
+    if request.method == 'POST':
+        return redirect(url_for('model_detect'))
     return render_template('image.html', form=form, file_url=file_url)
 
 @app.route('/camera', methods=['GET', 'POST'])
@@ -73,8 +78,20 @@ def cam():
 # Signals inference
 @app.route('/cam')
 def video():
-    cam()
     return Response(camera_inference(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# Model detection path
+@app.route('/detect')
+def model():
+    return Response(model_detection(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/detector')
+def model_detect():
+    flash('Detection page....')
+    return render_template('detector.html')
+    
+
 
 '''
 TEST THIS
@@ -91,6 +108,10 @@ def camInput():
 @app.route('/voice')
 def voice():
     return render_template("voice.html")
+
+@app.route('/basetest')
+def test():
+    return render_template('base.html')
 
 
 '''

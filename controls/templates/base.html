@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <title>{% block title %}{% endblock %}</title>
+   {% block link %}<link rel="stylesheet" href="../static/camera.css">{% endblock %}
+  </head>
+  <body>
+    <div class="sidebar">
+      <header>My Menu</header>
+      <a href="#">
+        <i class="fas fa-qrcode"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="camera">
+        <i class="fas fa-camera"></i>
+        <span>Camera Input</span>
+      </a>
+      <a href="voice">
+        <i class="fas fa-microphone"></i>
+        <span>Voice Input</span>
+      </a>
+      <a href="text">
+         <i class="fas fa-sms"></i>
+        <span>Text Input</span>
+      </a>
+      <a href="image">
+        <i class="far fa-image"></i>
+        <span>Image Input</span>
+      </a>
+      <a href="about">
+        <i class="fas fa-question-circle"></i>
+        <span>About</span>
+      </a>
+    </div>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>

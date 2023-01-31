@@ -41,7 +41,7 @@ def camera_inference():
     sentence = []
     predictions = []
     threshold = 0.5
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 # Set mediapipe model 
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         while True:

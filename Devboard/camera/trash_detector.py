@@ -70,47 +70,58 @@ def reconstruct(pb_path):
 
 detection_graph = reconstruct("ssd_mobilenet_v2_taco_2018_03_29.pb")
 
+@tf.function
+def detect_fn(image):
+    image, shapes = detection_graph.preprocess(image)
+    prediction_dict = detection_graph.predict(image, shapes)
+    detections = detection_graph.postprocess(prediction_dict, shapes)
+    return detections
+
 # Live streaming for inferencing the model
-while cap.isOpened():
-    ret, frame = cap.read()
-    start = time.time()
-
-    # Converting the frames to tensors
-    image_np = np.array(frame)
-    input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
-
-    with detection_graph.as_default():
+with detection_graph.as_default():
         gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.01)
         with tf.compat.v1.Session(graph=detection_graph, 
                                     config=tf.compat.v1.ConfigProto(gpu_options=gpu_options)) as sess:
-            
-            Image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
-            detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
-            detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
-            detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
-            num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+            while cap.isOpened():
+                ret, frame = cap.read()
+                start = time.time()
 
-            (boxes, scores, classes, num) = sess.run(
-                                                    [detection_boxes, detection_scores,
-                                                     detection_classes, num_detections],
-                                                     feed_detector = {Image_tensor: input_tensor}
-            )
-    
-            vis_util.visualize_boxes_and_labels_on_image_array(image_np,
-                                                                np.squeeze(boxes),
-                                                                np.squeeze(classes).astype(np.int32),
-                                                                np.squeeze(scores),
-                                                                category_index,
-                                                                use_normalized_coordinates=True,
-                                                                line_thickness=15
-            )
-            end = time.time()
-            total_time = end - start
-            fps = 1/total_time
-            cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255, 0), 4, cv2.LINE_AA)
-            cv2.imshow('Yolo Model', frame)
+              
+                Image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+                detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+                detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
+                detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
+                num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-                            break
+                # Converting the frames to tensors
+                image_np = np.array(frame)
+                input_tensor = np.expand_dims(image_np, axis=0)
+
+                (boxes, scores, classes, num) = sess.run(
+                                                        [detection_boxes, detection_scores,
+                                                        detection_classes, num_detections],
+                                                        feed_dict = {Image_tensor: input_tensor})
+                image_np_with_detections = image_np.copy()
+                vis_util.visualize_boxes_and_labels_on_image_array(image_np_with_detections,
+                                                                    np.squeeze(boxes),
+                                                                    np.squeeze(classes).astype(np.int32),
+                                                                    np.squeeze(scores),
+                                                                    category_index,
+                                                                    use_normalized_coordinates=True,
+                                                                    line_thickness=15
+                )
+                end = time.time()
+                total_time = end - start
+                fps = 1/total_time
+                cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255, 0), 4, cv2.LINE_AA)
+                cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (800, 600)))
+
+                if cv2.waitKey(10) & 0xFF == ord('q'):
+                                break
 cap.release()
 cv2.destroyAllWindows()
+
+
+'''
+Add a custom image of garbage to be collected in the future
+'''
