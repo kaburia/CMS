@@ -5,6 +5,12 @@
     font-size: 50px;
     font-family: 'Montserrat', sans-serif;
 }
+h1 {
+  text-align:center;
+}
+form {
+  text-align:center;
+}
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans:600&display=swap');
 *{
