@@ -1,6 +1,7 @@
 import cv2
 
 # open camera
+# cv2.CAP_V4L2
 
 def camera_input():
     cap = cv2.VideoCapture(0)
