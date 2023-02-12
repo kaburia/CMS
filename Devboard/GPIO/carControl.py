@@ -9,10 +9,6 @@ GPIO.setwarnings(False)
 
 
 #......................................SERVO SETUP............................................................
-PWM_PIN=33 #use GPIO12(BCM) pin 32(*BOARD)
-GPIO.setup(PWM_PIN,GPIO.OUT)
-Servo = GPIO.PWM(PWM_PIN,50)  #50hz pwm frequency to get a period of 20ms that a servo needs
-Servo.start(0)
 
 #....................................MOTOR DRIVER............................................................
 class Drive(): #to call the objects functions  moveF ,moveB,STOP,LEFT,RIGHT
@@ -115,7 +111,11 @@ def Estimate_Time(D):
 
 #...........................................SERVO MOTOR CONTROL..............................................................
 def SERVO(Angle):
-    
+    PWM_PIN=33 #use GPIO12(BCM) pin 32(*BOARD)
+    GPIO.setup(PWM_PIN,GPIO.OUT)
+    Servo = GPIO.PWM(PWM_PIN,50)  #50hz pwm frequency to get a period of 20ms that a servo needs
+    Servo.start(0)
+
     Servo.ChangeDutyCycle(Angle)
     time.sleep(3)
   
