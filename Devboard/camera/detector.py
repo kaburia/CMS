@@ -5,12 +5,25 @@ import cv2
 # import tensorflow as tf
 from PIL import Image
 import time
+import sys
+
+sys.path.insert(0, '../Devboard/GPIO')
+
+from VideoThreading import VideoGet, CountsPerSec, putIterationsPerSec 
+from carControl import Drive, SERVO, Distance, Estimate_Time
+
+
+def carInit(Ena=32,In1=15,In2=16,Enb=33,In3=18,In4=22, Angle=0):
+    # Initialize the motor
+    Drive1 = Drive(Ena,In1,In2,Enb,In3,In4)
+
 
 def LoadModel(weights='yolov5s'):
     return torch.hub.load("ultralytics/yolov5", f'{weights}')
 
+
 def getUploadedClass(uploadedimage, weights='yolov5m.pt'):
-    model = LoadModel()
+    model = LoadModel(weights=weights)
     '''RETURN THE DOMINANT CLASS'''
     imageModel = model(np.array(Image.open(uploadedimage)))
     # Checking the 80% threshold
@@ -23,33 +36,24 @@ def getUploadedClass(uploadedimage, weights='yolov5m.pt'):
         return preds[0][-1]   
 
 
-def model_detection(uploadedimage):
+def model_detection(image_class):
     pred_class = dict()
-    image_class = getUploadedClass(uploadedimage=uploadedimage)
     count = 0
 
-    cap = cv2.VideoCapture(cv2.CAP_V4L2)
+    video_getter = VideoGet().start()
+    cps = CountsPerSec().start()
+    model = LoadModel()
 
     # # # # Live streaming for inferencing the model
-    while cap.isOpened():
+    while True:
 
-        model = LoadModel()
-        ret, frame = cap.read()
+        frame = video_getter.frame
+        frame = putIterationsPerSec(frame, cps.countsPerSec())
         
-        start = time.time()
-
-        results =model(frame)
+        results = model(frame)
 
         for pred in results.pred[0].numpy():
-                if pred[-1] >= 0.8 and pred[-2] == image_class:
-                    
-                    end = time.time()
-                    total_time = end - start
-                    fps = 1/total_time
-                    cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255, 0), 4, cv2.LINE_AA)
-                    # re, buffer = cv2.imencode('.jpg', np.squeeze(results.render()))
-                    # frame = buffer.tobytes()
-                    cv2.imshow('OpenCV Feed', np.squeeze(results.render()))
+                if pred[-1] >= 0.7 and pred[-2] == image_class:
 
                     count += 1
                     '''Get position of the image and the rotation'''
@@ -60,13 +64,10 @@ def model_detection(uploadedimage):
                 else:
                     '''return no image within range'''
         
-        end = time.time()
-        total_time = end - start
-        fps = 1/total_time
-        cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255, 0), 4, cv2.LINE_AA)
         
         re, buffer = cv2.imencode('.jpg', np.squeeze(results.render()))
         frame = buffer.tobytes()
+        cps.increment()
         
         yield(b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
