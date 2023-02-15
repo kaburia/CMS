@@ -14,9 +14,6 @@ sudo apt-get update
 
 sudo apt-get install edgetpu-compiler
 
-git clone https://github.com/ultralytics/yolov5.git
-
-cd yolov5 && python export.py --weights /content/yolov5m.pt    --include tflite 
 
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
