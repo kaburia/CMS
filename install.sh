@@ -42,3 +42,25 @@ wget https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_run
 sudo pip3 install tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl
 
 sudo apt-get install edgetpu-compiler
+
+
+# Update the package list
+sudo apt-get update
+
+# Install OpenCV
+sudo apt-get install -y python3-opencv
+
+# Install the necessary Python packages
+sudo pip3 install opencv-python-headless imutils RPi.GPIO adafruit-circuitpython-pca9685
+
+# Enable the I2C interface
+sudo raspi-config nonint do_i2c 0
+
+# Enable the PWM interface
+sudo raspi-config nonint do_pwm 0
+
+# Configure the servo motor
+echo "dtoverlay=pwm-2chan,pin=18,func=2,pin2=19,func2=2" | sudo tee -a /boot/config.txt
+
+# Reboot the Raspberry Pi to apply the changes
+sudo reboot
