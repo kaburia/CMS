@@ -1,66 +1,37 @@
 #!/bin/bash
 
-# Update package list and upgrade existing packages
-sudo apt-get update
-sudo apt-get upgrade -y
+# Install and setup Python3.8
+sudo apt update
+sudo apt install -y python3.8
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+sudo update-alternatives --set python /usr/bin/python3.8
 
-# Install required packages for Python and Coral USB Accelerator
-sudo apt-get install python3 python3-pip python3-edgetpu libedgetpu1-std libedgetpu-dev -y
+# Install necessary packages
+sudo apt install -y python3-pip python3-opencv libopencv-dev libjasper-dev libqtgui4 libqt4-test libhdf5-dev libhdf5-103 libatlas-base-dev libjasper-dev libqtgui4 libqt4-test libilmbase-dev libopenexr-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libgtk-3-dev libtbb-dev libdc1394-22-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libopenblas-dev
 
-# Install required packages for PWM control
-sudo apt-get install pigpio -y
+# Install pip packages
+sudo pip3 install numpy pandas matplotlib scikit-learn scipy imutils pillow tensorflow keras pycoral RPi.GPIO adafruit-blinka
 
-# Enable the I2C and SPI interfaces
+# Enable SPI and I2C interfaces
 sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_i2c 0
 
-# Install the pigpio library for Python
-sudo pip3 install pigpio
-
-# Install the RPi.GPIO library for Python
-sudo pip3 install RPi.GPIO
-
-# Install the numpy and opencv-python libraries for Python
-sudo pip3 install numpy opencv-python
-
-# Download and install the Ultrasonic Sensor driver
-cd ~
-git clone https://github.com/adafruit/Adafruit_Python_GPIO.git
-cd Adafruit_Python_GPIO
-sudo python3 setup.py install
-
-# Download and install the YOLOv5 model for object detection
-cd ~
+# Clone YOLOv5 repository
 git clone https://github.com/ultralytics/yolov5.git
 cd yolov5
+
+# Install YOLOv5 dependencies
 sudo pip3 install -r requirements.txt
-python3 detect.py --weights yolov5s.pt --img 640 --conf 0.4 --source 0
 
-# Download and install the pycoral library for the Coral USB Accelerator
-cd ~
-wget https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl
-sudo pip3 install tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl
+# Download YOLOv5 weights
+wget https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
 
-sudo apt-get install edgetpu-compiler
+# Clone Adafruit_Python_PCA9685 repository for controlling the servo motor
+git clone https://github.com/adafruit/Adafruit_Python_PCA9685.git
+cd Adafruit_Python_PCA9685
+sudo python3 setup.py install
+cd ..
 
+# Start the program with multithreading support
+python3 main.py -t
 
-# Update the package list
-sudo apt-get update
-
-# Install OpenCV
-sudo apt-get install -y python3-opencv
-
-# Install the necessary Python packages
-sudo pip3 install opencv-python-headless imutils RPi.GPIO adafruit-circuitpython-pca9685
-
-# Enable the I2C interface
-sudo raspi-config nonint do_i2c 0
-
-# Enable the PWM interface
-sudo raspi-config nonint do_pwm 0
-
-# Configure the servo motor
-echo "dtoverlay=pwm-2chan,pin=18,func=2,pin2=19,func2=2" | sudo tee -a /boot/config.txt
-
-# Reboot the Raspberry Pi to apply the changes
-sudo reboot
