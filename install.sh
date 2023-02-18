@@ -1,13 +1,12 @@
 #!/bin/bash
 
 # Update and upgrade the system
-sudo apt-get update -y
-sudo apt-get upgrade -y
+sudo apt-get update
+sudo apt-get upgrade
 
-# Install Python 3.8 and make it the default version
-sudo apt-get install -y python3.8
+# Install Python 3.8 and set it to path
+sudo apt-get install python3.8
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
-sudo update-alternatives --set python /usr/bin/python3.8
 
 # Install raspi-config
 sudo apt-get install -y raspi-config
@@ -16,27 +15,31 @@ sudo apt-get install -y raspi-config
 sudo raspi-config nonint do_camera 0
 sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_serial 0
 
-# Install dependencies for ultrasonic sensor
-sudo apt-get install -y python3-dev python3-rpi.gpio
+# Install modules for controlling ultrasonic sensor, servo motor, and DC motor
+sudo apt-get install python3-gpiozero
+sudo apt-get install python3-pigpio
+sudo apt-get install python3-picamera
+sudo apt-get install python3-opencv
+sudo apt-get install python3-numpy
+sudo apt-get install python3-scipy
+sudo apt-get install python3-pandas
+sudo apt-get install python3-matplotlib
+sudo apt-get install python3-tk
+sudo apt-get install python3-serial
 
-# Install dependencies for servo motor control
-sudo apt-get install -y pigpio
+# Set up the Coral USB accelerator
+cd ~
+wget https://dl.google.com/coral/edgetpu_api/edgetpu_api_latest.tar.gz -O edgetpu_api_latest.tar.gz
+tar xzf edgetpu_api_latest.tar.gz
+cd edgetpu_api
+bash ./install.sh
 
-# Install dependencies for DC motor control
-sudo apt-get install -y python3-pigpio
-
-# Install PyCoral and EdgeTPU tools for Coral Dev Board
-wget https://github.com/google-coral/pycoral/releases/download/release-frogfish/tflite_runtime-2.5.0-cp38-cp38-linux_aarch64.whl
-sudo apt-get install -y python3-pip
-sudo python3 -m pip install numpy pillow opencv-python
-sudo python3 -m pip install tflite_runtime-2.5.0-cp38-cp38-linux_aarch64.whl
-
-# Download and convert YOLOv5s model for Coral Dev Board
-wget https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
-python3 -m tflite_convert --output_file=yolov5s_edgetpu.tflite --saved_model_dir=yolov5s.pt --enable_v1_converter
-
-# Enable pigpiod daemon at startup
-sudo systemctl enable pigpiod.service
-
-echo "Setup complete. Please reboot your Raspberry Pi."
+# Compile the YOLOv5s model to work with the Coral accelerator
+cd ~
+git clone https://github.com/ultralytics/yolov5.git
+cd yolov5
+sudo apt-get install protobuf-compiler libprotoc-dev
+sudo pip install -r requirements.txt
+python models/export.py --weights yolov5s.pt --img 640 --batch 1 --include package='edgetpu' --include file=tflite_convert
