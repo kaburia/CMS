@@ -3,6 +3,7 @@ from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired, FileField
 from wtforms import SubmitField
+import time
 
 
 import sys, os
@@ -26,7 +27,7 @@ from detector import model_detection
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '../controls/static/images'
+UPLOAD_FOLDER = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\camera\images_classify'
 
 app.secret_key = "secret key"
 app.config['UPLOADED_PHOTOS_DEST'] = UPLOAD_FOLDER
@@ -68,6 +69,7 @@ def image():
     else:
         file_url = None
     if request.method == 'POST':
+        # time.sleep(10)
         return redirect(url_for('model_detect'))
     return render_template('image.html', form=form, file_url=file_url)
 
@@ -143,7 +145,7 @@ def about():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5500)
+    app.run(host='192.168.0.102', debug=True, port=5500)
 
 #intents file
 '''
