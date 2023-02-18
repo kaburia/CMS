@@ -1,9 +1,9 @@
 import torch
-import onnx
-from onnx_tf.backend import prepare
-import tensorflow as tf
+# import onnx
+# from onnx_tf.backend import prepare
+# import tensorflow as tf
 
-model = torch.hub.load("ultralytics/yolov5", 'custom', path="best.pt")
+model = torch.hub.load("ultralytics/yolov5", 'custom', path="best.pt", device='cpu')
 
 img_size = (640, 640)
 batch_size = 4

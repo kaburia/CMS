@@ -1,24 +1,45 @@
-# /bin/bash
+#!/bin/bash
 
-sudo apt -y install libportaudio2
-pip install -q --use-deprecated=legacy-resolver tflite-model-maker
-pip install -q pycocotools
-pip install -q opencv-python-headless==4.1.2.30
-pip uninstall -y tensorflow && pip install -q tensorflow==2.8.0
-
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-
-echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
-
+# Update and upgrade the system
 sudo apt-get update
+sudo apt-get upgrade
 
-sudo apt-get install edgetpu-compiler
+# Install Python 3.8 and set it to path
+sudo apt-get install python3.8
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
 
+# Install raspi-config
+sudo apt-get install -y raspi-config
 
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+# Enable camera and GPIO pins using raspi-config
+sudo raspi-config nonint do_camera 0
+sudo raspi-config nonint do_spi 0
+sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_serial 0
 
-echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+# Install modules for controlling ultrasonic sensor, servo motor, and DC motor
+sudo apt-get install python3-gpiozero
+sudo apt-get install python3-pigpio
+sudo apt-get install python3-picamera
+sudo apt-get install python3-opencv
+sudo apt-get install python3-numpy
+sudo apt-get install python3-scipy
+sudo apt-get install python3-pandas
+sudo apt-get install python3-matplotlib
+sudo apt-get install python3-tk
+sudo apt-get install python3-serial
 
-sudo apt-get update
+# Set up the Coral USB accelerator
+cd ~
+wget https://dl.google.com/coral/edgetpu_api/edgetpu_api_latest.tar.gz -O edgetpu_api_latest.tar.gz
+tar xzf edgetpu_api_latest.tar.gz
+cd edgetpu_api
+bash ./install.sh
 
-sudo apt-get install edgetpu-compiler
+# Compile the YOLOv5s model to work with the Coral accelerator
+cd ~
+git clone https://github.com/ultralytics/yolov5.git
+cd yolov5
+sudo apt-get install protobuf-compiler libprotoc-dev
+sudo pip install -r requirements.txt
+python models/export.py --weights yolov5s.pt --img 640 --batch 1 --include package='edgetpu' --include file=tflite_convert

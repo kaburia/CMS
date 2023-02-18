@@ -18,6 +18,7 @@ cd CMS
 ### 2. Create a Virtual Environment
 
 ```
+pip install virtualenv
 python3 -m venv CMS
 ```
 
@@ -37,11 +38,6 @@ source ./CMS/bin/activate
 
 ```zsh
 python -m pip install -r requirements.txt
-git clone https://github.com/tensorflow/models.git
-cd models/research \
-    && protoc object_detection/protos/*.proto --python_out=. \
-    && cp object_detection/packages/tf2/setup.py . && \
-    python3 -m pip install --use-feature=2020-resolver .
 ```
 
 ### 5. Change directory to controls then run controls.py

@@ -7,7 +7,7 @@ from mediapipe_functs import mediapipe_detection, draw_styled_landmarks, extract
 import os
 
 # SAVED_MODEL_PATH 
-TFLITE_FILE_PATH = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\camera\action5.tflite'
+TFLITE_FILE_PATH = '../Devboard/camera/action5.tflite'
 
 # Loading the tensorflow model
 interpreter = tflite.lite.Interpreter(model_path=TFLITE_FILE_PATH)
@@ -41,7 +41,7 @@ def camera_inference():
     sentence = []
     predictions = []
     threshold = 0.5
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 # Set mediapipe model 
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         while True:

@@ -5,8 +5,12 @@ from flask_wtf.file import FileAllowed, FileRequired, FileField
 from wtforms import SubmitField
 import time
 
+from PIL import Image
+import numpy as np
 
 import sys, os
+import uuid
+import glob
 # from werkzeug.utils import secure_filename
 
 camera_path = '../Devboard/camera'
@@ -14,8 +18,9 @@ camera_path = '../Devboard/camera'
 
 sys.path.insert(0, f'{camera_path}')
 # from pycoral_t import camera_inference # Testing the images seen
-# from camera_input import camera_input #Turning on the camera
-from detector import model_detection
+from camera_input import camera_input #Turning on the camera
+from detector import model_detection, getUploadedClass
+import torch
 # # # Image input
 # # from object_detection import detector
 
@@ -27,7 +32,9 @@ from detector import model_detection
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\camera\images_classify'
+UPLOAD_FOLDER = '/home/kali/Desktop/CMS/Devboard/camera/uploadeImages'
+
+# model = torch.hub.load("ultralytics/yolov5", 'yolov5m.pt')
 
 app.secret_key = "secret key"
 app.config['UPLOADED_PHOTOS_DEST'] = UPLOAD_FOLDER
@@ -86,7 +93,19 @@ def video():
 # Model detection path
 @app.route('/detect')
 def model():
-    return Response(model_detection(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    search_dir = "/home/kali/Desktop/CMS/Devboard/camera/uploadeImages"
+    # files = list(filter(os.path.isfile, os.listdir(UPLOAD_FOLDER)))
+    files = os.listdir(UPLOAD_FOLDER)
+    print(files)
+    files.sort(key=lambda x: os.path.getmtime(os.path.join(UPLOAD_FOLDER, x)))
+    print(files)
+    # Get the image class or a flag
+    if type(getUploadedClass(os.path.join(UPLOAD_FOLDER, files[0]))) == str:
+        image_class = 'chair'
+    else:
+        image_class = getUploadedClass(os.path.join(UPLOAD_FOLDER, files[0]))
+
+    return Response(model_detection(image_class), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/detector')
 def model_detect():
@@ -104,7 +123,7 @@ IF
 # What the camera sees
 @app.route('/camInput')
 def camInput():
-    return Response(camera_inference(),mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(camera_input(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/voice')
@@ -145,7 +164,7 @@ def about():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.102', debug=True, port=5500)
+    app.run(host='192.168.0.105', debug=True, port=5500)
 
 #intents file
 '''
