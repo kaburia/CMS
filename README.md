@@ -18,6 +18,7 @@ cd CMS
 ### 2. Create a Virtual Environment
 
 ```
+pip install virtualenv
 python3 -m venv CMS
 ```
 
