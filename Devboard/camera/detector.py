@@ -11,6 +11,7 @@ sys.path.insert(0, '../Devboard/GPIO')
 
 from VideoThreading import VideoGet, CountsPerSec, putIterationsPerSec 
 from carControl import Drive, SERVO, Distance, Estimate_Time
+from camera_input import camera_input
 
 
 def carInit(Ena=32,In1=15,In2=16,Enb=33,In3=18,In4=22, Angle=0):
@@ -22,7 +23,7 @@ def LoadModel(weights='yolov5s'):
     return torch.hub.load("ultralytics/yolov5", f'{weights}')
 
 
-def getUploadedClass(uploadedimage, weights='yolov5m.pt'):
+def getUploadedClass(uploadedimage, weights='yolov5m'):
     model = LoadModel(weights=weights)
     '''RETURN THE DOMINANT CLASS'''
     imageModel = model(np.array(Image.open(uploadedimage)))
@@ -36,39 +37,29 @@ def getUploadedClass(uploadedimage, weights='yolov5m.pt'):
         return preds[0][-1]   
 
 
-def model_detection(image_class):
+def model_detection(image_class, frame):
     pred_class = dict()
     count = 0
-
-    video_getter = VideoGet().start()
-    cps = CountsPerSec().start()
     model = LoadModel()
+                
+    results = model(frame)
 
-    # # # # Live streaming for inferencing the model
-    while True:
+    for pred in results.pred[0].numpy():
+        if pred[-1] >= 0.7 and pred[-2] == image_class:
+            count += 1
+            return 'inframe'
 
-        frame = video_getter.frame
-        frame = putIterationsPerSec(frame, cps.countsPerSec())
-        
-        results = model(frame)
-
-        for pred in results.pred[0].numpy():
-                if pred[-1] >= 0.7 and pred[-2] == image_class:
-
-                    count += 1
-                    '''Get position of the image and the rotation'''
-                    if count > 1:
-                        '''There is more than one target object within object return the nearest one'''
-                elif pred[-1] <= 0.8 or pred[-2] != image_class:
-                    '''rotate the car'''
-                else:
-                    '''return no image within range'''
+            if count > 1:
+                '''There is more than one target object within object return the nearest one'''
+        elif pred[-1] <= 0.8 or pred[-2] != image_class:
+            '''rotate the car'''
+        else:
+            '''return no image within range'''
+            return camera_input()
         
         
-        re, buffer = cv2.imencode('.jpg', np.squeeze(results.render()))
-        frame = buffer.tobytes()
-        cps.increment()
+
         
-        yield(b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+        
 
