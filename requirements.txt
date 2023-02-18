@@ -1,10 +1,10 @@
 flask==2.2.2
 flask_Reuploaded
 Flask-WTF==1.1.0
-# tensorflow==2.10.0
+tensorflow==2.10.0
 opencv-python==4.6.0.66
 numpy==1.23.4
-# mediapipe
+mediapipe
 matplotlib==3.5.2
 pyserial==3.5
 #cmake==3.25.0
