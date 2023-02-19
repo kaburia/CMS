@@ -4,9 +4,9 @@
 sudo apt-get update
 sudo apt-get upgrade
 
-# Install Python 3.8 and set it to path
-sudo apt-get install python3.8
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+# # Install Python 3.8 and set it to path
+# sudo apt-get install python3.8
+# sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
 
 # Install raspi-config
 sudo apt-get install -y raspi-config
