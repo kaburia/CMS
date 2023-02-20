@@ -2,4 +2,4 @@
 
 
 
-![qr2](https://user-images.githubusercontent.com/88529649/220043871-53ab684c-450d-4ca2-a614-b54683131f4a.jpg)
+![qr2](https://user-images.githubusercontent.com/88529649/220046648-15d65701-b3e7-446e-bf0e-638948591e01.jpg)
