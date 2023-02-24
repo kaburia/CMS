@@ -6,6 +6,7 @@ Control movement of the car based on either hand signals, voice input, text inpu
 
 ### Setting up Coral Dev Board 
 ``Windows``
+
 https://docs.google.com/document/d/1kgKmQmAn292BDhxTejwZH-vQI1-5RpvkD-5UMVHZiNY/edit
 
 ## Installation
