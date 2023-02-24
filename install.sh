@@ -2,7 +2,7 @@
 
 # Update and upgrade the system
 sudo apt-get update
-# sudo apt-get -y upgrade
+sudo apt-get -y upgrade
 
 
 os=$(uname -a)
@@ -59,6 +59,7 @@ fi
 
 # Install dependencies
 pip install -r requirements.txt
+pip install rpi.gpio
 
 
 # Run the script
@@ -80,8 +81,25 @@ sudo apt-get install -y cron
 # Echo new cron into cron file
 (crontab -l 2>/dev/null; echo "@reboot ../CMS/CMS/bin/python /controls.py") | crontab -
 
-# Install new cron file
-# crontab mycron
+# Check if user is root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
 
-# Remove the temporary file
-# rm mycron
+# Add root privileges to run crontab
+sudo chmod u+s /usr/bin/crontab
+sudo chmod g+s /usr/bin/crontab
+sudo chown root:crontab /usr/bin/crontab
+sudo chown root:crontab /var/spool/cron/crontabs
+sudo chmod 1730 /var/spool/cron/crontabs
+
+echo "Root privileges added to run crontab successfully!"
+
+# Changing to root
+sudo su
+cd .. 
+source CMS/bin//activate
+cd controls/
+python controls.py
+
