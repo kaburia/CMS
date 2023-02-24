@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO #In order to us RPi.GPIO throughout the rest of the Pyth
 from time import sleep
 import time
 
-GPIO.setmode(GPIO.BOARD) #determine  pin-numbering schemes BOARD= pin numbers follow the pin numbers on header OR BCM=pin numbers follow the lower-level numbering system defined by the Raspberry Pi's Broadcom-chip brain.
+GPIO.setmode(GPIO.BCM) #determine  pin-numbering schemes BOARD= pin numbers follow the pin numbers on header OR BCM=pin numbers follow the lower-level numbering system defined by the Raspberry Pi's Broadcom-chip brain.
 GPIO.setwarnings(False)
 
 #...................................ULTRASONIC SENSOR SETUP....................................................
@@ -38,7 +38,7 @@ class Drive(): #to call the objects functions  moveF ,moveB,STOP,LEFT,RIGHT
         GPIO.output(self.In4,GPIO.LOW)
         self.pwma.ChangeDutyCycle(speed)
         self.pwmb.ChangeDutyCycle(speed)
-        sleep(Time)
+        
     def moveB(self,speed=80,Time =5): #move ackward motors rotate in the oposite direction to call it........... Drive1.move(Duty Cycle ,Time to reverse).........
         GPIO.output(self.In1,GPIO.LOW)
         GPIO.output(self.In2,GPIO.HIGH)
@@ -46,14 +46,15 @@ class Drive(): #to call the objects functions  moveF ,moveB,STOP,LEFT,RIGHT
         GPIO.output(self.In4,GPIO.HIGH)
         self.pwma.ChangeDutyCycle(speed)
         self.pwmb.ChangeDutyCycle(speed)
-        sleep(Time)
+        # sleep(Time)
     def STOP(self,Time =2):  #stop motors puling in pins low stops the lm298 to call it........... Drive1.STOP(STOP time else it will stop for 2 sec).........
         GPIO.output(self.In1,GPIO.LOW) #selt in1 high
         GPIO.output(self.In2,GPIO.LOW)
         GPIO.output(self.In3,GPIO.LOW)
         GPIO.output(self.In4,GPIO.LOW)
-        self.pwm.ChangeDutyCycle(0) #0% pwm duty cycle
-        sleep(Time) 
+        self.pwmb.ChangeDutyCycle(0)
+        self.pwma.ChangeDutyCycle(0) #0% pwm duty cycle
+        # sleep(Time)
     def LEFT(self,Time=0.5): #move left to call it........... Drive1.LEFT(Time for this left movement ).........
         GPIO.output(self.In1,GPIO.HIGH)
         GPIO.output(self.In2,GPIO.LOW)

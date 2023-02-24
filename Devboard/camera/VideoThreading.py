@@ -27,7 +27,7 @@ class CountsPerSec:
         return self._num_occurrences / elapsed_time
 
 class VideoGet:
-    def __init__(self, src=cv2.CAP_V4L2):
+    def __init__(self, src=0):
         self.stream = cv2.VideoCapture(src)
         self.ret, self.frame = self.stream.read()
         self.stopped = False
@@ -51,8 +51,8 @@ def putIterationsPerSec(frame, iterations_per_sec):
     Add iterations per second text to lower-left corner of a frame.
     """
 
-    cv2.putText(frame, "{:.0f} iterations/sec".format(iterations_per_sec),
-        (10, 450), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255))
+    cv2.putText(frame, "{:.0f} frames/sec".format(iterations_per_sec),
+        (10, 450), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,255, 0))
     return frame
 
 class VideoShow:

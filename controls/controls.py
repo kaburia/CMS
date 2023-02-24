@@ -13,9 +13,13 @@ import glob
 # from werkzeug.utils import secure_filename
 
 camera_path = '../Devboard/camera'
+gpio_path = '../Devboard/GPIO'
 # # voice = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\voice\speech_to_text'
 
 sys.path.insert(0, f'{camera_path}')
+sys.path.insert(0, f'{gpio_path}')
+from control import control
+
 # from pycoral_t import camera_inference # Testing the images seen
 from camera_input import camera_input #Turning on the camera
 from detector import model_detection, getUploadedClass
@@ -31,7 +35,7 @@ import torch
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/home/kali/Desktop/CMS/Devboard/camera/uploadeImages'
+UPLOAD_FOLDER = '../Desktop/CMS/Devboard/camera/uploadeImages'
 
 # model = torch.hub.load("ultralytics/yolov5", 'yolov5m.pt')
 
@@ -89,7 +93,7 @@ def video():
 
 
 # Model detection path
-@app.route('/detect')
+@app.route('/detect/<class_>')
 def model():
     search_dir = "/home/kali/Desktop/CMS/Devboard/camera/uploadeImages"
     # files = list(filter(os.path.isfile, os.listdir(UPLOAD_FOLDER)))
@@ -136,8 +140,11 @@ def test():
 '''
 Using stable Diffusion to convert text to images
 '''
-@app.route('/text')
+@app.route('/text', methods=['GET', 'POST'])
 def text():
+    if request.methods == 'POST':
+        # get the class from the user
+        class_ = request.form['nm']
     return render_template("text.html")
 
 @app.route('/about')
@@ -145,7 +152,9 @@ def about():
     return render_template("about.html")
 
 
- 
+@app.route('/control')
+def controls():
+    return Response(control(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 
@@ -162,7 +171,7 @@ def about():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.105', debug=True, port=5500)
+    app.run(host='192.168.255.55', debug=False, port=5500)
 
 #intents file
 '''

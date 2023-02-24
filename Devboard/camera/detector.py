@@ -45,7 +45,7 @@ def model_detection(image_class, frame):
     results = model(frame)
 
     for pred in results.pred[0].numpy():
-        if pred[-1] >= 0.7 and pred[-2] == image_class:
+        if pred[-1] >= 0.3 and pred[-2] == image_class:
             count += 1
             return 'inframe'
 
