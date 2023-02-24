@@ -8,7 +8,7 @@ qr = QRCode(version=1,
             border=2)
 
 # Data to display
-qr.add_data("http://movement.pythonanywhere.com/")
+qr.add_data("192.168.142.55")
 qr.make(fit=True)
 
 img = qr.make_image(fill_color='black', back_color='white')

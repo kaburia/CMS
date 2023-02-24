@@ -3,6 +3,7 @@ from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired, FileField
 from wtforms import SubmitField
+import time
 
 from PIL import Image
 import numpy as np
@@ -79,6 +80,7 @@ def image():
     else:
         file_url = None
     if request.method == 'POST':
+        # time.sleep(10)
         return redirect(url_for('model_detect'))
     return render_template('image.html', form=form, file_url=file_url)
 
