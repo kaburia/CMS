@@ -77,14 +77,22 @@ sudo apt-get update
 sudo apt-get install -y cron
 
 # crontab -l > mycron
+# Changing to root
+sudo su
+cd .. 
+source CMS/bin/activate
+cd controls/
 
-# Echo new cron into cron file
-(crontab -l 2>/dev/null; echo "@reboot ../CMS/CMS/bin/python /controls.py") | crontab -
+if [[ $os == *"kali-raspberry-pi"* ]]; then
+  # Echo new cron into cron file
+  (crontab -l 2>/dev/null; echo "@reboot /home/kali/CMS/CMS/bin/python /home/kali/CMS/controls/controls.py") | crontab -
+else
+  echo "This script is only compatible with Kali Linux Raspberry Pi OS."
+fi
 
 # Check if user is root
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
-  exit
 fi
 
 # Add root privileges to run crontab
@@ -96,10 +104,7 @@ sudo chmod 1730 /var/spool/cron/crontabs
 
 echo "Root privileges added to run crontab successfully!"
 
-# Changing to root
-sudo su
-cd .. 
-source CMS/bin//activate
-cd controls/
+
+
 python controls.py
 
