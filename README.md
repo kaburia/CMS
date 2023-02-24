@@ -7,17 +7,20 @@ Control movement of the car based on either hand signals, voice input, text inpu
 ### Setting up Coral Dev Board 
 https://docs.google.com/document/d/1kgKmQmAn292BDhxTejwZH-vQI1-5RpvkD-5UMVHZiNY/edit
 
-## Installation Steps
+## Installation
 
-### 1. Clone the repository and change directory into it
+### First time boot up of device
 ```
 git clone https://github.com/kaburia/CMS.git
 cd CMS
+
 chmod +x install.sh
+
 ./install.sh
+
+ip addr show | grep -w inet | awk '{print $2}' | awk -F / '{print $1}'
 ```
 
 
-Open [http://localhost:5500](http://localhost:5500) with your browser to see the result.
 
 
