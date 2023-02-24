@@ -13,11 +13,8 @@ https://docs.google.com/document/d/1kgKmQmAn292BDhxTejwZH-vQI1-5RpvkD-5UMVHZiNY/
 ```
 git clone https://github.com/kaburia/CMS.git
 cd CMS
-
 chmod +x install.sh
-
 ./install.sh
-
 ip addr show | grep -w inet | awk '{print $2}' | awk -F / '{print $1}'
 ```
 
