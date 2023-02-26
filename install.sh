@@ -71,6 +71,57 @@ ip=$(hostname -I | awk '{print $1}')
 # Replace the host parameter in the Python script with the IP address
 sed -i "s/app.run(host=.*/app.run(host='${ip}', debug=False, port=5500)/" controls.py
 
+# Install OpenVPN
+sudo apt-get update
+sudo apt-get install openvpn easy-rsa -y
+
+# Create the OpenVPN server configuration file
+sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/
+sudo gzip -d /etc/openvpn/server.conf.gz
+sudo sed -i 's/;user nobody/user nobody/' /etc/openvpn/server.conf
+sudo sed -i 's/;group nogroup/group nogroup/' /etc/openvpn/server.conf
+sudo sed -i 's/;push "redirect-gateway def1 bypass-dhcp"/push "redirect-gateway def1 bypass-dhcp"/' /etc/openvpn/server.conf
+sudo sed -i 's/;push "dhcp-option DNS 208.67.222.222"/push "dhcp-option DNS 8.8.8.8"/' /etc/openvpn/server.conf
+sudo sed -i 's/;user nobody/user nobody/' /etc/openvpn/server.conf
+sudo sed -i 's/;group nogroup/group nogroup/' /etc/openvpn/server.conf
+
+# Generate the Diffie-Hellman parameters
+sudo openssl dhparam -out /etc/openvpn/dh.pem 2048
+
+# Generate the server certificate and key
+sudo easyrsa init-pki
+sudo easyrsa build-ca
+sudo easyrsa gen-req server nopass
+sudo easyrsa sign-req server server
+
+# Generate client certificates and keys
+sudo easyrsa gen-req client1 nopass
+sudo easyrsa sign-req client client1
+
+# Create the OpenVPN client configuration files
+sudo mkdir -p /etc/openvpn/client-configs/files
+sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /etc/openvpn/client-configs/base.conf
+sudo sed -i 's/remote my-server-1 1194/remote YOUR_SERVER_IP_ADDRESS YOUR_PORT/' /etc/openvpn/client-configs/base.conf
+sudo sed -i 's/;user nobody/user nobody/' /etc/openvpn/client-configs/base.conf
+sudo sed -i 's/;group nogroup/group nogroup/' /etc/openvpn/client-configs/base.conf
+sudo sed -i 's/ca ca.crt/#ca ca.crt/' /etc/openvpn/client-configs/base.conf
+sudo sed -i 's/cert client.crt/#cert client.crt/' /etc/openvpn/client-configs/base.conf
+sudo sed -i 's/key client.key/#key client.key/' /etc/openvpn/client-configs/base.conf
+echo "<ca>" | sudo tee -a /etc/openvpn/client-configs/base.conf
+sudo cat /etc/openvpn/pki/ca.crt | sudo tee -a /etc/openvpn/client-configs/base.conf
+echo "</ca>" | sudo tee -a /etc/openvpn/client-configs/base.conf
+sudo cp /etc/openvpn/pki/issued/client1.crt /etc/openvpn/client-configs/files/
+sudo cp /etc/openvpn/pki/private/client1.key /etc/openvpn/client-configs/files/
+
+# Set up port forwarding on the router
+sudo ufw allow 1194/udp
+sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
+sudo sysctl -p
+sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+
+# Restart the OpenVPN service
+
+
 # Set a cronjob to start on boot with the ip address as host
 # Write out current crontab to a file
 sudo apt-get update
