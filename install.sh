@@ -121,6 +121,7 @@ sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 
 # Restart the OpenVPN service
 
+# TODO set up a crontab job on reboot to setup the ip address as host and set up openvpn and port forwarding as a separate bash script
 
 # Set a cronjob to start on boot with the ip address as host
 # Write out current crontab to a file
