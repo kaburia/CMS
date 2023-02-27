@@ -26,6 +26,7 @@ The Autonomous RC Car System uses the following hardware components:
 * Infrared sensors
 * Camera
 * DC Motors
+
 The hardware components are assembled onto a PCB used as a shield connected to the Raspberry Pi, with a power bank for energy supply.
 
 ### Software
