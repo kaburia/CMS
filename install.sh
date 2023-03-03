@@ -44,7 +44,10 @@ elif [[ $os == *"raspberrypi"* ]]; then
   
 #   Creating a virtual environment
   sudo pip3 install virtualenv
+  python3 -m virtualenv CMS
   
+  # Activate the virtual environment
+  source CMS/bin/activate
   # Set up the coral USB accelerator
   echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
   curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
