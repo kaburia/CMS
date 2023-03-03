@@ -51,7 +51,7 @@ elif [[ $os == *"raspberrypi"* ]]; then
   sudo apt-get update
   sudo apt-get install -y libedgetpu1-std
   python3 -m virtualenv CMS
-  sudo apt-get install python3-pycoral
+  sudo apt-get install -y python3-pycoral
 else
   echo "Unknown operating system."
 fi
