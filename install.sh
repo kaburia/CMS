@@ -73,7 +73,7 @@ router_dns=$(nmcli dev show | grep 'IP4.DNS' | awk '{print $2}')
 
 # Set a static IP address
 sudo sed -i '$a\interface eth0' /etc/dhcpcd.conf
-sudo sed -i '$a\static ip_address='"${router_ip}"'57/24' /etc/dhcpcd.conf
+sudo sed -i '$a\static ip_address='"${router_ip}"'157/24' /etc/dhcpcd.conf
 sudo sed -i '$a\static routers='"${router_ip}" /etc/dhcpcd.conf
 sudo sed -i '$a\static domain_name_servers='"${router_dns}" /etc/dhcpcd.conf
 
