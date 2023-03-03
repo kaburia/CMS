@@ -39,7 +39,7 @@ if [[ $os == *"kali-raspberry-pi"* ]]; then
   sudo apt-get install -y libedgetpu1-std
   python -m pip install --extra-index-url https://google-coral.github.io/py-repo/ pycoral~=2.0
  
-elif [[ $os == *"raspbian"* ]]; then
+elif [[ $os == *"raspberrypi"* ]]; then
   echo "Raspberry Pi OS detected."
   
 #   Creating a virtual environment
