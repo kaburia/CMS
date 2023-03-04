@@ -13,8 +13,8 @@ import uuid
 import glob
 # from werkzeug.utils import secure_filename
 
-camera_path = '../Devboard/camera'
-gpio_path = '../Devboard/GPIO'
+camera_path = '/home/pi/Desktop/CMS/Devboard/camera'
+gpio_path = '/home/pi/Desktop/CMS/Devboard/GPIO'
 # # voice = r'C:\Users\Austin\Desktop\Agent\Car movements\CMS\Devboard\voice\speech_to_text'
 
 sys.path.insert(0, f'{camera_path}')
@@ -173,7 +173,7 @@ def controls():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.103', debug=False, port=5500)
+    app.run(host='192.168.0.157', debug=False, port=5500)
 
 #intents file
 '''
