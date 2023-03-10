@@ -74,7 +74,7 @@ interpreter = make_interpreter(model)
 interpreter.allocate_tensors()
 
 def camera_input():
-    video_getter = VideoGet().start()
+    video_getter = VideoGet(cv2.CAP_V4L2).start()
     cps = CountsPerSec().start()
     while True:
         frame_capture = 0
@@ -119,7 +119,7 @@ def camera_input():
                 endTime = datetime.datetime.now() + datetime.timedelta(seconds=runtime)
                 while True:
                     print(f'Moving Forward, Time: {datetime.datetime.now()}')
-                    Drive1.moveF(speed=DutyCycle)
+                    Drive1.moveB(speed=DutyCycle)
                     frame = np.array(image)
                     re, buffer = cv2.imencode('.jpg', frame)
                     frame = buffer.tobytes()
