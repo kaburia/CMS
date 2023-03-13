@@ -1,11 +1,15 @@
-# Get the device's IP address
+#!/bin/bash
+
+
+# Get the device's IP address and store it in the "ip" variable
 ip=$(hostname -I | awk '{print $1}')
-sed -i "s/app.run(host=.*/app.run(host='${ip}', debug=False, port=5500)/" /home/pi/Desktop/CMS/controls/controls.py
+
+# Replace the host parameter in the Flask app.run function with the "ip" variable
+sed -i "s/app.run(host='[^']*'/app.run(host='${ip}'/" /home/pi/Desktop/CMS/controls/controls.py
+
+# Start the Flask application
+python3 /home/pi/Desktop/CMS/controls/controls.py
 
 # Start up the fan
 cd /home/pi/RGB_Cooling_HAT/
 sudo sh install.sh
-
-# Move back to execute
-cd /home/pi/Desktop/CMS/controls
-python controls.py

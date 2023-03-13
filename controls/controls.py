@@ -173,7 +173,7 @@ def controls():
 #     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(host='', debug=False, port=5500)
+    app.run(host='192.168.195.55', debug=False, port=5500)
 
 #intents file
 '''
