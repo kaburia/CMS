@@ -2,7 +2,9 @@
 
 Control movement of the car based on either hand signals, voice input, text input or remotely controlled
 
-![image](https://user-images.githubusercontent.com/88529649/211144449-fdc1ea0e-d5b2-4542-a7a4-0237eeda202b.png)
+<!-- [image](https://user-images.githubusercontent.com/88529649/211144449-fdc1ea0e-d5b2-4542-a7a4-0237eeda202b.png) -->
+![image](https://user-images.githubusercontent.com/88529649/227771827-e7c283dd-9777-4168-8f73-52a85b6a7000.png)
+
 
 ## Introduction
 CMS is a project that aims to create a self-driving remote-controlled car that can track objects and navigate around obstacles in real-time. The system uses a combination of hardware components, such as a Raspberry Pi 4 Model B and a Coral USB Accelerator, and software algorithms, including YOLOv5, Deep SORT, A*, SLAM, and reinforcement learning.
