@@ -6,7 +6,7 @@
 
 
 ## Introduction
-CMS is a project that aims to create a self-driving remote-controlled car that can track objects and navigate around obstacles in real-time. The system uses a combination of hardware components, such as a Raspberry Pi 4 Model B and a Coral USB Accelerator, and software algorithms, including YOLOv5, Deep SORT, A*, SLAM, and reinforcement learning.
+CMS is a project that aims to create a self-driving car that can track objects and navigate around obstacles in real time. The system uses a combination of hardware components, such as a Raspberry Pi 4 Model B and a Coral USB Accelerator, and software algorithms, including YOLOv5, Deep SORT, A*, SLAM, and reinforcement learning.
 
 ## Objectives
 The objectives of the Autonomous RC Car System are as follows:
@@ -31,7 +31,7 @@ The Autonomous RC Car System uses the following hardware components:
 The hardware components are assembled onto a PCB used as a shield connected to the Raspberry Pi, with a power bank for energy supply.
 
 ### Software
-The system uses the Robot Operating System (ROS) as the underlying framework for the software development and is programmed using Python. The software incorporates the following algorithms:
+The system uses the Robot Operating System (ROS) as the underlying framework for software development and is programmed using Python. The software incorporates the following algorithms:
 
 * YOLOv5 for object detection
 * Deep SORT for object tracking
@@ -55,7 +55,7 @@ The expected outcomes of the Autonomous RC Car System project are:
 
 ## Installation
 
-### First time boot up of device
+### First-time boot-up of the device
 ```
 git clone https://github.com/kaburia/CMS.git
 cd CMS
